@@ -14,22 +14,24 @@ int main(int argc, char *argv[])
     int execResult, uinputPipe[2], listenfd = 0, connfd = 0;
     struct sockaddr_in serv_addr;
     char sendBuff[1025], buffer[255];
-    time_t ticks;
     pid_t child_pid;
     
     listenfd = socket(AF_INET, SOCK_STREAM, 0); //open socket
     //zeroing buffers:
     memset(&serv_addr, '0', sizeof(serv_addr)); 
     memset(sendBuff, '0', sizeof(sendBuff));
-    
+   
     //configure socket
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     serv_addr.sin_port = htons(8081); //work on port 8081
     bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr));
-    listen(listenfd, 1);
-	
+    listen(listenfd, 10);
+	printf("Log: waiting for connection\n");
+	fflush(stdout);
     connfd = accept(listenfd, (struct sockaddr*) NULL, NULL);    
+	printf("Log: connected!\n");
+	fflush(stdout);
 
     pipe(uinputPipe);
     child_pid = fork(); //create child process for bin/uinput

@@ -59,6 +59,9 @@ main(void)
 
     fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
 
+	if (dim[0] <= 0 || dim[1] <= 0)
+		die("error: wrong resolution");
+
     if(fd < 0)
         die("error: open");
 
@@ -113,7 +116,7 @@ main(void)
         int x = xTmp * dim[0];
 	int y = yTmp * dim[1];
 
-memset(&ev, 0, sizeof(ev));
+	memset(&ev, 0, sizeof(ev));
         ev.type = EV_ABS;
 	ev.code = ABS_X;
 	ev.value = x;
